@@ -15,6 +15,10 @@ describe('toggl-got', () => {
     res.body.data.fullname.should.equal('Angus');
   });
 
+  it('validates path', async () => {
+    await toggl({}).should.be.rejected();
+  });
+
   it('accepts options', async () => {
     const res = await toggl('me', {});
     res.body.data.fullname.should.equal('Angus');
