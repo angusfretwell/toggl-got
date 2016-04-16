@@ -16,7 +16,7 @@ describe('toggl-got', () => {
   });
 
   it('validates path', async () => {
-    await toggl({}).should.be.rejected();
+    await toggl({}).should.be.rejectedWith(TypeError);
   });
 
   it('accepts options', async () => {
@@ -26,23 +26,23 @@ describe('toggl-got', () => {
 
   it('global token option', async () => {
     process.env.TOGGL_TOKEN = 'fail';
-    await toggl('me', {}).should.be.rejected();
+    await toggl('me', {}).should.be.rejectedWith(/403/);
     process.env.TOGGL_TOKEN = token;
   });
 
   it('token option', async () => {
-    await toggl('me', { token: 'fail' }).should.be.rejected();
+    await toggl('me', { token: 'fail' }).should.be.rejectedWith(/403/);
   });
 
   it('global endpoint option', async () => {
     process.env.TOGGL_ENDPOINT = 'fail';
-    await toggl('me', { retries: 1 }).should.be.rejected();
+    await toggl('me', { retries: 1 }).should.be.rejectedWith(/ENOTFOUND/);
     delete process.env.TOGGL_ENDPOINT;
   });
 
   it('endpoint option', async () => {
     process.env.TOGGL_ENDPOINT = 'https://www.toggl.com/api/v8/';
-    await toggl('me', { endpoint: 'fail', retries: 1 }).should.be.rejected();
+    await toggl('me', { endpoint: 'fail', retries: 1 }).should.be.rejectedWith(/ENOTFOUND/);
     delete process.env.TOGGL_ENDPOINT;
   });
 
